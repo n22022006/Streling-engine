@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Radiation Simulation</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+</head>
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+        <a href="javascript:void(0)" onclick="showSection('simulation-section')">Solar Radiation Program</a>
+        <a href="javascript:void(0)" onclick="showSection('theory-section')">Theory & Formulas</a>
+        <a href="javascript:void(0)" onclick="navigateSection('index2.html')">Stirling Temperature Program</a>
+    </div>
+
+    <div class="header">
+        <div style="display: flex; align-items: center;">
+            <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+            <h1 style="margin: 0;">Solar Radiation Program</h1>
+        </div>
+        <div class="sub-header">
+            <span>DayalBagh Eductaional Institute</span>
+            <span>DEI</span>
+        </div>
+    </div>
+
+    <div id="simulation-section" class="app-section">
+        <div class="main-container">
+            <div class="column">
+                <fieldset>
+                    <legend>Measuring Place</legend>
+                    <div class="input-row">
+                        <label>Standard longitude</label>
+                        <input type="number" id="std_lon_d" value="31"> <span>Deg</span>
+                        <input type="number" id="std_lon_m" value="17"> <span>Min</span>
+                        <input type="number" id="std_lon_s" value="0"> <span>Sec</span>
+                    </div>
+                    <div class="input-row">
+                        <label>Local longitude</label>
+                        <input type="number" id="loc_lon_d" value="31"> <span>Deg</span>
+                        <input type="number" id="loc_lon_m" value="10"> <span>Min</span>
+                        <input type="number" id="loc_lon_s" value="0"> <span>Sec</span>
+                    </div>
+                    <div class="input-row">
+                        <label>Local Latitude</label>
+                        <input type="number" id="loc_lat_d" value="30"> <span>Deg</span>
+                        <input type="number" id="loc_lat_m" value="0"> <span>Min</span>
+                        <input type="number" id="loc_lat_s" value="0"> <span>Sec</span>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Measuring Place Time</legend>
+                    <div class="input-row">
+                        <label>Local standard time</label>
+                        <input type="number" id="time_h" value="12"> <span>Hr</span>
+                        <input type="number" id="time_m" value="0"> <span>Min</span>
+                        <input type="number" id="time_s" value="0"> <span>Sec</span>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="column">
+                <fieldset>
+                    <legend>Measuring Date</legend>
+                    <div class="date-row">
+                        <div><label>Day</label><input type="number" id="date_d" value="15"></div>
+                        <div><label>Month</label><input type="number" id="date_m" value="6"></div>
+                        <div><label>Year</label><input type="number" id="date_y" value="2013"></div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Required Input</legend>
+                    <div class="required-inputs">
+                        <label>Ground Type</label>
+                        <select id="ground_type">
+                            <option value="0.2">Cement (Albedo ~0.2)</option>
+                            <option value="0.1">Asphalt (Albedo ~0.1)</option>
+                            <option value="0.7">Snow (Albedo ~0.7)</option>
+                            <option value="0.25">Grass (Albedo ~0.25)</option>
+                        </select>
+
+                        <label>Direction from Greenwich</label>
+                        <select id="direction">
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                        </select>
+
+                        <label>The Tilted Angle (Degrees)</label>
+                        <input type="number" id="tilt_angle" value="0" step="any">
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="column graph-column">
+                <div id="radiationChart" class="chart-container"></div>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <fieldset class="output-box flex-2">
+                <legend>Output Data of Solar Radiation at Standard Time</legend>
+                <div class="output-flex">
+                    <button class="calc-btn" onclick="runSimulation()">Calculate<br>Output</button>
+                    <table class="output-table">
+                        <tr><td>Total Solar Radiation</td><td><input type="text" id="out_total_time" readonly></td><td>W/m²</td></tr>
+                        <tr><td>Beam solar radiation</td><td><input type="text" id="out_beam" readonly></td><td>W/m²</td></tr>
+                        <tr><td>Diffuse solar radiation</td><td><input type="text" id="out_diffuse" readonly></td><td>W/m²</td></tr>
+                        <tr><td>Ground-reflected radiation</td><td><input type="text" id="out_ground" readonly></td><td>W/m²</td></tr>
+                    </table>
+                </div>
+            </fieldset>
+
+            <fieldset class="output-box flex-1 center-text">
+                <legend>Total Solar Radiation per day</legend>
+                <div class="daily-output">
+                    <input type="text" id="out_total_day" readonly> <span>kWh/m² per day</span>
+                </div>
+                <div class="sun-times">
+                    <div><b>Sunrise:</b> <input type="text" id="out_sr_h" readonly> h <input type="text" id="out_sr_m" readonly> m</div>
+                    <div><b>Sunset:</b> <input type="text" id="out_ss_h" readonly> h <input type="text" id="out_ss_m" readonly> m</div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="main-container">
+            <fieldset class="output-box flex-1">
+                <legend>How Output Is Calculated</legend>
+                <div class="explain-grid">
+                    <div class="explain-card">
+                        <h3>Step 1: Convert Inputs</h3>
+                        <p>
+                            Day number: <b id="ex_day_number">-</b><br>
+                            Equation of time (Et): <b id="ex_et">-</b> min<br>
+                            Time correction: <b id="ex_time_correction">-</b> hr
+                        </p>
+                        <div class="math-block">$$\text{Solar Time} = \text{Standard Time} + \text{Time Correction}$$</div>
+                    </div>
+
+                    <div class="explain-card">
+                        <h3>Step 2: Radiation Components at Selected Time</h3>
+                        <p>
+                            Selected standard time: <b id="ex_selected_time">-</b> hr<br>
+                            Solar time used: <b id="ex_selected_solar_time">-</b> hr<br>
+                            Hour angle: <b id="ex_hour_angle">-</b> deg
+                        </p>
+                        <div class="math-block">$$G_t = G_{B_t} + G_{D_t} + G_{R_t}$$</div>
+                        <p>
+                            Beam: <b id="ex_beam">-</b> W/m<sup>2</sup><br>
+                            Diffuse: <b id="ex_diffuse">-</b> W/m<sup>2</sup><br>
+                            Ground-reflected: <b id="ex_ground">-</b> W/m<sup>2</sup><br>
+                            Total: <b id="ex_total">-</b> W/m<sup>2</sup>
+                        </p>
+                    </div>
+
+                    <div class="explain-card">
+                        <h3>Step 3: How the Graph Is Generated</h3>
+                        <p>
+                            The chart loops from <b>04:00</b> to <b>20:00</b> in <b>0.25 hr</b> steps. For each step, it computes $G_t$ and plots:
+                        </p>
+                        <div class="math-block">$$\text{Point} = (\text{Standard Time},\; G_t)$$</div>
+                        <p>
+                            Number of plotted points: <b id="ex_point_count">-</b><br>
+                            Peak plotted radiation: <b id="ex_peak_radiation">-</b> W/m<sup>2</sup>
+                        </p>
+                    </div>
+
+                    <div class="explain-card">
+                        <h3>How Changing Inputs Affects Output</h3>
+                        <p>
+                            Increase <b>Tilt Angle</b>: can increase beam capture near optimum tilt.<br>
+                            Increase <b>Albedo (Ground Type)</b>: increases ground-reflected term $G_{R_t}$.<br>
+                            Change <b>Date</b>: changes declination, sunrise/sunset, and day energy.<br>
+                            Change <b>Latitude/Longitude/Time</b>: shifts hour angle and instantaneous output.
+                        </p>
+                        <p class="explain-note">
+                            Tip: Click <b>Calculate Output</b> after changing inputs to refresh both output values and graph.
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div id="theory-section" class="app-section" style="display: none;">
+        <div class="main-container">
+            <fieldset class="output-box flex-1" style="padding: 40px; font-size: 16px; line-height: 1.6;">
+                <legend style="font-size: 20px;">Theory & Mathematical Models</legend>
+                
+                <h2>1. Introduction to the Low-Temperature Solar Stirling Engine</h2>
+                <p>The direct conversion of solar power into mechanical power reduces both the cost and complexity of the prime mover. The model simulated here represents a prototype of a solar-powered Stirling engine designed to operate at a low temperature range.</p>
+                <div style="text-align: center; margin: 20px 0;"></div>
+
+                <hr style="border: 1px solid var(--border-color); margin: 30px 0;">
+
+                <h2>2. Solar Radiation Modeling on Tilted Surfaces</h2>
+                <p>Global solar radiation on a tilted surface is the algebraic sum of three distinct solar components: direct (beam) solar radiation, diffuse solar radiation, and ground-reflected solar radiation.</p>
+                <div style="text-align: center; margin: 20px 0;"></div>
+                <div class="math-block">$$G_t = G_{B_t} + G_{D_t} + G_{R_t}$$</div>
+
+                <h3>Beam Radiation</h3>
+                <p>The beam component is calculated using the beam radiation on a horizontal surface ($G_B$) and a geometric multiplier known as the <strong>beam radiation tilt factor</strong> ($R_B$).</p>
+                <div class="math-block">$$R_B = \frac{\cos(\theta)}{\cos(\Phi)} = \frac{\sin(L - \beta)\sin(\delta) + \cos(L - \beta)\cos(\delta)\cos(h)}{\sin(L)\sin(\delta) + \cos(L)\cos(\delta)\cos(h)}$$</div>
+                <div class="math-block">$$G_{B_t} = G_B R_B$$</div>
+
+                <h3>Diffuse and Ground-Reflected Radiation</h3>
+                <p>Utilizing the Liu and Jordan Isotropic Model:</p>
+                <div class="math-block">$$G_{D_t} = (0.11 \times G_{B_n}) \left( \frac{1 + \cos(\beta)}{2} \right)$$</div>
+                <div class="math-block">$$G_{R_t} = (G_B + G_D) \rho \left( \frac{1 - \cos(\beta)}{2} \right)$$</div>
+
+                <hr style="border: 1px solid var(--border-color); margin: 30px 0;">
+
+                <h2>3. Thermal Analysis & Energy Balance</h2>
+                <p>To determine output power, a model for thermal analysis is required. This considers radiation and convection heat transfer between the absorber, the working fluid, and the lower plate.</p>
+                <div style="text-align: center; margin: 20px 0;"></div>
+
+                <p><b>Energy Balance at the Hot Absorber (Plate 1):</b></p>
+                <div class="math-block">$$ \alpha_{p1} G_t + h_{c,a1-p1}(T_{a1} - T_{p1}) + \sigma \epsilon_{p1} F_{a1-p1}(T_{a1}^4 - T_{p1}^4) = h_{c,p1-air}(T_{p1} - T_{air}) + \sigma \epsilon_{p1} F_{p1-p2}(T_{p1}^4 - T_{p2}^4) $$</div>
+
+                <p><b>Energy Balance at the Cold Sink (Plate 2):</b></p>
+                <div class="math-block">$$ h_{c,air-p2}(T_{air} - T_{p2}) + \sigma \epsilon_{p1} F_{p1-p2} \left(\frac{A_{p1}}{A_{p2}}\right) (T_{p1}^4 - T_{p2}^4) = h_{c,p2-a2}(T_{p2} - T_{a2}) + \sigma \epsilon_{p2} F_{p2-a2}(T_{p2}^4 - T_{a2}^4) $$</div>
+
+                <p><b>Energy Balance of the Working Fluid:</b></p>
+                <div class="math-block">$$ h_{c,p1-air}(T_{p1} - T_{air}) = h_{c,air-p2}(T_{air} - T_{p2}) $$</div>
+                
+                <p style="margin-top: 40px; font-size: 14px; color: var(--secondary-color); text-align: center;">
+                    <i>Reference: Shazly, J.H., Hafez, A.Z., El Shenawy, E.T., & Eteiba, M.B. (2014). Simulation, design and thermal analysis of a solar Stirling engine using MATLAB. Energy Conversion and Management, 79, 626-639.</i>
+                </p>
+            </fieldset>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

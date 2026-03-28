@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stirling Engine Temperature Program</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+        <a href="javascript:void(0)" onclick="navigatePage('index.html#simulation-section')">Solar Radiation Program</a>
+        <a href="javascript:void(0)" onclick="navigatePage('index.html#theory-section')">Theory & Formulas</a>
+        <a href="javascript:void(0)" onclick="navigatePage('index2.html')">Stirling Temperature Program</a>
+    </div>
+
+    <div class="header">
+        <div style="display: flex; align-items: center;">
+            <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+            <h1 style="margin: 0;">Stirling Temperature Program</h1>
+        </div>
+        <div class="sub-header">
+            <span>Dayalbagh Educational Institute </span>
+            <span>DEI</span>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="column inputs-column">
+            
+            <fieldset>
+                <legend>Surrounding Temperature</legend>
+                <div class="input-row">
+                    <label>Input : Ta1</label>
+                    <input type="number" id="Ta1" value="47.6" step="any"> <span>°C</span>
+                </div>
+                <div class="input-row">
+                    <label>Output : Ta2</label>
+                    <input type="number" id="Ta2" value="32.4" step="any"> <span>°C</span>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Solar Radiation</legend>
+                <div class="input-row">
+                    <label>Irradiance</label>
+                    <input type="number" id="Gt" value="820" step="any"> <span>W/m²</span>
+                </div>
+            </fieldset>
+
+            <button class="calc-btn" onclick="calculateTemperatures()">Result</button>
+
+            <fieldset class="output-panel">
+                <legend>Plates Temperature</legend>
+                <div class="input-row">
+                    <label>Plate 1 : Tp1</label>
+                    <input type="text" id="Tp1" readonly> <span>°C</span>
+                </div>
+                <div class="input-row">
+                    <label>Plate 2 : Tp2</label>
+                    <input type="text" id="Tp2" readonly> <span>°C</span>
+                </div>
+            </fieldset>
+
+            <fieldset class="output-panel">
+                <legend>Stirling Air Temperature</legend>
+                <div class="input-row">
+                    <label>Tair</label>
+                    <input type="text" id="Tair" readonly> <span>°C</span>
+                </div>
+            </fieldset>
+
+        </div>
+
+        <div class="column diagram-column">
+            <fieldset style="height: 100%;">
+                <legend>Heat Transfer Model</legend>
+                
+                <div class="legend-box">
+                    <p><span style="color:red;">-----▶</span> Radiative heat transfer</p>
+                    <p><span style="color:gray;">━━━━▶</span> Convective heat transfer</p>
+                    <p><span style="color:green;">━━━━▶</span> Solar energy adsorption</p>
+                    <p><span style="color:orange;">━━━━▶</span> Transportation heat transfer by air flow</p>
+                </div>
+
+                <div class="svg-container">
+                    <svg viewBox="0 0 500 300" width="100%" height="100%">
+                        <circle cx="420" cy="50" r="25" fill="gold" />
+                        <line x1="400" y1="70" x2="300" y2="150" stroke="green" stroke-width="2" marker-end="url(#arrow-green)" />
+                        
+                        <rect x="100" y="150" width="250" height="10" fill="#2b6cb0" />
+                        <rect x="100" y="220" width="250" height="10" fill="#2b6cb0" />
+                        <text x="215" y="140" fill="red" font-weight="bold">Tp1</text>
+                        <text x="215" y="245" fill="red" font-weight="bold">Tp2</text>
+                        <text x="215" y="190" fill="red" font-weight="bold">Tair</text>
+                        
+                        <text x="215" y="60" fill="red" font-weight="bold">Ta1</text>
+                        <text x="215" y="290" fill="red" font-weight="bold">Ta2</text>
+
+                        <defs>
+                            <marker id="arrow-gray" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="gray" /></marker>
+                            <marker id="arrow-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="red" /></marker>
+                            <marker id="arrow-green" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="green" /></marker>
+                            <marker id="arrow-orange" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="orange" /></marker>
+                        </defs>
+
+                        <line x1="225" y1="70" x2="225" y2="140" stroke="gray" stroke-width="2" marker-end="url(#arrow-gray)" marker-start="url(#arrow-gray)" />
+                        <line x1="225" y1="160" x2="225" y2="210" stroke="gray" stroke-width="2" marker-end="url(#arrow-gray)" marker-start="url(#arrow-gray)" />
+                        <line x1="225" y1="230" x2="225" y2="275" stroke="gray" stroke-width="2" marker-end="url(#arrow-gray)" marker-start="url(#arrow-gray)" />
+
+                        <line x1="160" y1="160" x2="160" y2="210" stroke="red" stroke-dasharray="4" stroke-width="2" marker-end="url(#arrow-red)" marker-start="url(#arrow-red)" />
+                        
+                        <line x1="270" y1="170" x2="270" y2="200" stroke="orange" stroke-width="2" marker-end="url(#arrow-orange)" />
+                        <line x1="290" y1="200" x2="290" y2="170" stroke="orange" stroke-width="2" marker-end="url(#arrow-orange)" />
+                    </svg>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <fieldset class="output-box flex-1">
+            <legend>How Formula Is Working and Giving Output</legend>
+            <div class="explain-grid">
+                <div class="explain-card">
+                    <h3>Step 1: Input Conversion</h3>
+                    <p>Ta1 = <b id="ex_ta1_c">-</b> degC = <b id="ex_ta1_k">-</b> K</p>
+                    <p>Ta2 = <b id="ex_ta2_c">-</b> degC = <b id="ex_ta2_k">-</b> K</p>
+                    <p>Gt = <b id="ex_gt">-</b> W/m<sup>2</sup></p>
+                </div>
+
+                <div class="explain-card">
+                    <h3>Step 2: Iterative Temperature Solve</h3>
+                    <p>Iterations: <b id="ex_iterations">-</b></p>
+                    <p>Learning rate: <b id="ex_lr">-</b></p>
+                    <p>Update clamp: <b>-1 to +1 K per iteration</b></p>
+                </div>
+
+                <div class="explain-card">
+                    <h3>Equation 22 Balance (Plate 1)</h3>
+                    <p class="formula-line">LHS = 0.95Gt + 0.895055(Ta1 - Tp1)^1.33 + 5.669e-8(Ta1^4 - Tp1^4)</p>
+                    <p class="formula-line">RHS = 28.0346(Tp1 - Tair)^1.25 + 5.068e-8(Tp1^4 - Tp2^4)</p>
+                    <p>LHS value: <b id="ex_eq22_lhs">-</b></p>
+                    <p>RHS value: <b id="ex_eq22_rhs">-</b></p>
+                    <p>Balance error (LHS - RHS): <b id="ex_eq22_err">-</b></p>
+                </div>
+
+                <div class="explain-card">
+                    <h3>Equation 23 Balance (Plate 2)</h3>
+                    <p class="formula-line">LHS = 28.0346(Tair - Tp2)^1.25 + 4.9e-8(Tp1^4 - Tp2^4)</p>
+                    <p class="formula-line">RHS = 0.903129(Tp2 - Ta2)^1.33 + 4.36e-8(Tp2^4 - Ta2^4)</p>
+                    <p>LHS value: <b id="ex_eq23_lhs">-</b></p>
+                    <p>RHS value: <b id="ex_eq23_rhs">-</b></p>
+                    <p>Balance error (LHS - RHS): <b id="ex_eq23_err">-</b></p>
+                </div>
+
+                <div class="explain-card">
+                    <h3>Step 3: Air Temperature Formula</h3>
+                    <p class="formula-line">Tair = (Tp1 + Tp2) / 2</p>
+                    <p>Tp1 = <b id="ex_tp1_k">-</b> K</p>
+                    <p>Tp2 = <b id="ex_tp2_k">-</b> K</p>
+                    <p>Tair = <b id="ex_tair_k">-</b> K</p>
+                </div>
+
+                <div class="explain-card">
+                    <h3>Step 4: Final Output in Celsius</h3>
+                    <p>Tp1 = <b id="ex_tp1_c">-</b> degC</p>
+                    <p>Tp2 = <b id="ex_tp2_c">-</b> degC</p>
+                    <p>Tair = <b id="ex_tair_c">-</b> degC</p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <script src="script2.js"></script>
+</body>
+</html>
