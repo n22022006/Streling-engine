@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stirling Engine Power Program</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+        <a href="javascript:void(0)" onclick="navigatePage('index.html#simulation-section')">Solar Radiation Program</a>
+        <a href="javascript:void(0)" onclick="navigatePage('index.html#theory-section')">Theory & Formulas</a>
+        <a href="javascript:void(0)" onclick="navigatePage('index2.html')">Stirling Temperature Program</a>
+        <a href="javascript:void(0)" onclick="navigatePage('index3.html')">Stirling Power Program</a>
+    </div>
+
+    <div class="header">
+        <div style="display: flex; align-items: center;">
+            <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+            <h1 style="margin: 0;">Stirling Engine Power Program</h1>
+        </div>
+        <div class="sub-header">
+            <span>Dayalbagh Educational Institute</span>
+            <span>DEI</span>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="column inputs-column">
+            
+            <fieldset>
+                <legend>Stirling Air Temperature</legend>
+                <div class="input-row">
+                    <label>Tair</label>
+                    <input type="number" id="tair" value="51.52" step="any"> <span>°C</span>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Stirling Inputs Data</legend>
+                <div class="input-row">
+                    <label>Volume (V)</label>
+                    <input type="number" id="volume" value="142.6" step="any"> <span>cm³</span>
+                </div>
+                <div class="input-row">
+                    <label>Speed</label>
+                    <input type="number" id="speed" value="126" step="any"> <span>RPM</span>
+                </div>
+                <div class="input-row">
+                    <label>Beale No. (Bn)</label>
+                    <input type="number" id="beale" value="0.016445" step="any"> <span></span>
+                </div>
+            </fieldset>
+
+            <button class="calc-btn" onclick="calculatePower()">Result</button>
+
+            <fieldset class="output-panel">
+                <legend>Stirling Engine Power</legend>
+                <div class="input-row">
+                    <label>Power (P)</label>
+                    <input type="text" id="powerOut" readonly> <span>Watts</span>
+                </div>
+            </fieldset>
+
+            <fieldset class="output-panel">
+                <legend>Stirling Air Pressure</legend>
+                <div class="input-row">
+                    <label>Pressure (Pm)</label>
+                    <input type="text" id="pressureOut" readonly> <span>MPa</span>
+                </div>
+            </fieldset>
+
+        </div>
+
+        <div class="column diagram-column">
+            <fieldset style="height: 100%;">
+                <legend>Heat Transfer Model</legend>
+                
+                <div class="legend-box">
+                    <p><span style="color:red;">-----▶</span> Radiative heat transfer</p>
+                    <p><span style="color:gray;">━━━━▶</span> Convective heat transfer</p>
+                    <p><span style="color:green;">━━━━▶</span> Solar energy adsorption</p>
+                    <p><span style="color:orange;">━━━━▶</span> Transportation heat transfer by air flow</p>
+                </div>
+
+                <div class="svg-container">
+                    <svg viewBox="0 0 500 300" width="100%" height="100%">
+                        <circle cx="420" cy="50" r="25" fill="gold" />
+                        <line x1="400" y1="70" x2="300" y2="150" stroke="green" stroke-width="2" marker-end="url(#arrow-green)" />
+                        
+                        <rect x="100" y="150" width="250" height="10" fill="#2b6cb0" />
+                        <rect x="100" y="220" width="250" height="10" fill="#2b6cb0" />
+                        <text x="215" y="140" fill="red" font-weight="bold">Tp1</text>
+                        <text x="215" y="245" fill="red" font-weight="bold">Tp2</text>
+                        <text x="215" y="190" fill="red" font-weight="bold">Tair</text>
+                        
+                        <text x="215" y="60" fill="red" font-weight="bold">Ta1</text>
+                        <text x="215" y="290" fill="red" font-weight="bold">Ta2</text>
+
+                        <defs>
+                            <marker id="arrow-gray" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="gray" /></marker>
+                            <marker id="arrow-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="red" /></marker>
+                            <marker id="arrow-green" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="green" /></marker>
+                            <marker id="arrow-orange" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="orange" /></marker>
+                        </defs>
+
+                        <line x1="225" y1="70" x2="225" y2="140" stroke="gray" stroke-width="2" marker-end="url(#arrow-gray)" marker-start="url(#arrow-gray)" />
+                        <line x1="225" y1="160" x2="225" y2="210" stroke="gray" stroke-width="2" marker-end="url(#arrow-gray)" marker-start="url(#arrow-gray)" />
+                        <line x1="225" y1="230" x2="225" y2="275" stroke="gray" stroke-width="2" marker-end="url(#arrow-gray)" marker-start="url(#arrow-gray)" />
+
+                        <line x1="160" y1="160" x2="160" y2="210" stroke="red" stroke-dasharray="4" stroke-width="2" marker-end="url(#arrow-red)" marker-start="url(#arrow-red)" />
+                        
+                        <line x1="270" y1="170" x2="270" y2="200" stroke="orange" stroke-width="2" marker-end="url(#arrow-orange)" />
+                        <line x1="290" y1="200" x2="290" y2="170" stroke="orange" stroke-width="2" marker-end="url(#arrow-orange)" />
+                    </svg>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+        <div class="main-container">
+            <fieldset class="output-box flex-1" style="padding: 30px;">
+                <legend>Power Formulas</legend>
+                <p>
+                    This mapping is for the <b>Stirling Power Program</b> only.
+                    It lists the formulas actually used by the power calculator.
+                </p>
+
+                <div style="overflow-x: auto; margin-top: 16px;">
+                    <table class="output-table" style="min-width: 900px; width: 100%;">
+                        <tr>
+                            <th style="text-align: left;">Power Block</th>
+                            <th style="text-align: left;">Formula Used</th>
+                            <th style="text-align: left;">Paper Location</th>
+                            <th style="text-align: left;">Cited by Authors</th>
+                        </tr>
+                        <tr>
+                            <td>Mean average gas pressure</td>
+                            <td>$$P_m = \rho_{air} R T_{air} = 323.49\,T_{air}$$</td>
+                            <td>Page 10, Eq. (26)</td>
+                            <td>Ideal-gas pressure relation</td>
+                        </tr>
+                        <tr>
+                            <td>Swept volume</td>
+                            <td>$$V = \pi r^2 L = 142.6 \times 10^{-6}\,\text{m}^3$$</td>
+                            <td>Page 10, Eq. (28)</td>
+                            <td>Geometry of expansion space</td>
+                        </tr>
+                        <tr>
+                            <td>Cycle frequency</td>
+                            <td>$$F = \frac{\text{Speed (RPM)}}{60}$$</td>
+                            <td>Derived from shaft speed</td>
+                            <td>Frequency conversion</td>
+                        </tr>
+                        <tr>
+                            <td>Total power output</td>
+                            <td>$$P = B_n P_m V F$$</td>
+                            <td>Page 10, Eq. (24) &amp; Eq. (29)</td>
+                            <td>Beale formulation</td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+    <script src="script3.js"></script>
+</body>
+</html>

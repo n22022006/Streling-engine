@@ -20,6 +20,10 @@
         <a href="javascript:void(0)" onclick="showSection('simulation-section')">Solar Radiation Program</a>
         <a href="javascript:void(0)" onclick="showSection('theory-section')">Theory & Formulas</a>
         <a href="javascript:void(0)" onclick="navigateSection('index2.html')">Stirling Temperature Program</a>
+<<<<<<< HEAD
+=======
+        <a href="javascript:void(0)" onclick="navigateSection('index3.html')">Stirling Power Program</a>
+>>>>>>> afd65b7 ( new addition)
     </div>
 
     <div class="header">
@@ -134,6 +138,54 @@
         </div>
 
         <div class="main-container">
+<<<<<<< HEAD
+=======
+            <fieldset class="output-box flex-1" style="padding: 30px;">
+                <legend>Solar Formulas </legend>
+                <p>
+                    This mapping is for the <b>Solar Radiation Program</b> only.
+                    It lists the formulas actually used by the Solar Radiation Program.
+                </p>
+
+                <div style="overflow-x: auto; margin-top: 16px;">
+                    <table class="output-table" style="min-width: 900px; width: 100%;">
+                        <tr>
+                            <th style="text-align: left;">Solar Block</th>
+                            <th style="text-align: left;">Formula Used </th>
+                            <th style="text-align: left;">Paper Location</th>
+                            <th style="text-align: left;">Cited by Authors</th>
+                        </tr>
+                        <tr>
+                            <td>Global solar radiation on tilted surface</td>
+                            <td>$$G_t = G_{B_t} + G_{D_t} + G_{R_t}$$</td>
+                            <td>Page 5, Eq. (1)</td>
+                            <td>Refs. [21], [22]</td>
+                        </tr>
+                        <tr>
+                            <td>Beam radiation and tilt factor</td>
+                            <td>$$R_B = \frac{\sin(L-\beta)\sin(\delta) + \cos(L-\beta)\cos(\delta)\cos(h)}{\sin(L)\sin(\delta) + \cos(L)\cos(\delta)\cos(h)}$$<br>$$G_{B_t} = G_B R_B$$</td>
+                            <td>Page 5, Eqs. (2)-(6)</td>
+                            <td>Beam-radiation geometry</td>
+                        </tr>
+                        <tr>
+                            <td>Diffuse radiation</td>
+                            <td>$$G_{D_t} = (0.11\,G_{B_n})\left(\frac{1+\cos(\beta)}{2}\right)$$</td>
+                            <td>Page 6, Eqs. (8), (10), (11)</td>
+                            <td>Liu and Jordan isotropic model</td>
+                        </tr>
+                        <tr>
+                            <td>Ground-reflected radiation</td>
+                            <td>$$G_{R_t} = (G_B + G_D)\rho\left(\frac{1-\cos(\beta)}{2}\right)$$</td>
+                            <td>Page 6, Eq. (12)</td>
+                            <td>Ground-reflection term</td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="main-container">
+>>>>>>> afd65b7 ( new addition)
             <fieldset class="output-box flex-1">
                 <legend>How Output Is Calculated</legend>
                 <div class="explain-grid">
@@ -232,7 +284,11 @@
 
                 <p><b>Energy Balance of the Working Fluid:</b></p>
                 <div class="math-block">$$ h_{c,p1-air}(T_{p1} - T_{air}) = h_{c,air-p2}(T_{air} - T_{p2}) $$</div>
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> afd65b7 ( new addition)
                 <p style="margin-top: 40px; font-size: 14px; color: var(--secondary-color); text-align: center;">
                     <i>Reference: Shazly, J.H., Hafez, A.Z., El Shenawy, E.T., & Eteiba, M.B. (2014). Simulation, design and thermal analysis of a solar Stirling engine using MATLAB. Energy Conversion and Management, 79, 626-639.</i>
                 </p>

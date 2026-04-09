@@ -6,6 +6,11 @@
     <title>Stirling Engine Temperature Program</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style2.css">
+<<<<<<< HEAD
+=======
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+>>>>>>> afd65b7 ( new addition)
 </head>
 <body>
 
@@ -14,6 +19,10 @@
         <a href="javascript:void(0)" onclick="navigatePage('index.html#simulation-section')">Solar Radiation Program</a>
         <a href="javascript:void(0)" onclick="navigatePage('index.html#theory-section')">Theory & Formulas</a>
         <a href="javascript:void(0)" onclick="navigatePage('index2.html')">Stirling Temperature Program</a>
+<<<<<<< HEAD
+=======
+        <a href="javascript:void(0)" onclick="navigatePage('index3.html')">Stirling Power Program</a>
+>>>>>>> afd65b7 ( new addition)
     </div>
 
     <div class="header">
@@ -170,6 +179,58 @@
                     <p>Tp2 = <b id="ex_tp2_c">-</b> degC</p>
                     <p>Tair = <b id="ex_tair_c">-</b> degC</p>
                 </div>
+<<<<<<< HEAD
+=======
+
+                <div class="explain-card" style="grid-column: 1 / -1;">
+                    <h3>Experiment Mapping to Shazly et al. (2014)</h3>
+                    <p><b>Section 4 (Thermal analysis):</b> Page 6-10, Eqs. (13)-(24), including convection/radiation balances and reduced equations.</p>
+                    <p><b>Equations implemented directly in this page's JS solver:</b> Page 10, Eq. (22), Eq. (23), Eq. (24).</p>
+                    <p class="formula-line">Eq. (24) used in code: \( T_{air} = \frac{T_{p1}+T_{p2}}{2} \)</p>
+                    <p style="margin-top: 10px; font-size: 14px; color: var(--secondary-color);">
+                        Bibliography linkage from the paper: thermal correlation reference [24]; radiation view-factor/emissivity reference [25].
+                    </p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="main-container">
+        <fieldset class="output-box flex-1" style="padding: 30px;">
+            <legend>Temperature Formulas</legend>
+            <p>
+                This mapping is for the <b>Stirling Temperature Program</b> only.
+                It lists the formulas actually used by the temperature solver.
+            </p>
+
+            <div style="overflow-x: auto; margin-top: 16px;">
+                <table class="output-table" style="min-width: 900px; width: 100%;">
+                    <tr>
+                        <th style="text-align: left;">Temperature Block</th>
+                        <th style="text-align: left;">Formula Used</th>
+                        <th style="text-align: left;">Paper Location</th>
+                        <th style="text-align: left;">Cited by Authors</th>
+                    </tr>
+                    <tr>
+                        <td>Plate 1 energy balance</td>
+                        <td>$$0.95G_t + 0.895055(T_{a1}-T_{p1})^{1.33} + 5.669\times 10^{-8}(T_{a1}^4-T_{p1}^4)$$<br>$$= 28.0346(T_{p1}-T_{air})^{1.25} + 5.068\times 10^{-8}(T_{p1}^4-T_{p2}^4)$$</td>
+                        <td>Page 10, Eq. (22)</td>
+                        <td>Thermal analysis balance</td>
+                    </tr>
+                    <tr>
+                        <td>Plate 2 energy balance</td>
+                        <td>$$28.0346(T_{air}-T_{p2})^{1.25} + 4.9\times 10^{-8}(T_{p1}^4-T_{p2}^4)$$<br>$$= 0.903129(T_{p2}-T_{a2})^{1.33} + 4.36\times 10^{-8}(T_{p2}^4-T_{a2}^4)$$</td>
+                        <td>Page 10, Eq. (23)</td>
+                        <td>Thermal analysis balance</td>
+                    </tr>
+                    <tr>
+                        <td>Air temperature approximation</td>
+                        <td>$$T_{air} = \frac{T_{p1} + T_{p2}}{2}$$</td>
+                        <td>Page 10, Eq. (24)</td>
+                        <td>Working-fluid approximation</td>
+                    </tr>
+                </table>
+>>>>>>> afd65b7 ( new addition)
             </div>
         </fieldset>
     </div>
