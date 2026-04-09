@@ -28,19 +28,19 @@ function setButtonLoading(button, loadingLabel) {
         button.dataset.defaultLabel = button.innerHTML;
     }
 
-    const loadingStartTimeMs = performance.now();
+    const startTime = performance.now();
     button.disabled = true;
     button.classList.add('loading');
     button.innerHTML = loadingLabel;
 
     return () => {
-        const elapsedLoadingTimeMs = performance.now() - loadingStartTimeMs;
-        const remainingLoadingDelayMs = Math.max(0, 280 - elapsedLoadingTimeMs);
+        const elapsed = performance.now() - startTime;
+        const remaining = Math.max(0, 280 - elapsed);
         setTimeout(() => {
             button.disabled = false;
             button.classList.remove('loading');
             button.innerHTML = button.dataset.defaultLabel;
-        }, remainingLoadingDelayMs);
+        }, remaining);
     };
 }
 
@@ -121,13 +121,13 @@ function calculateTemperatures(withUiLoading = true) {
     }
 
     // Final Eq. (24) evaluation after iteration.
-    let finalAirTemperatureKelvin = (Tp1 + Tp2) / 2;
+    let Tair_final = (Tp1 + Tp2) / 2;
 
     // Output conversion used by this program:
     // T(degC) = T(K) - 273.15
     const Tp1_C = Tp1 - 273.15;
     const Tp2_C = Tp2 - 273.15;
-    const Tair_C = finalAirTemperatureKelvin - 273.15;
+    const Tair_C = Tair_final - 273.15;
 
     // 3. Update the UI
     document.getElementById('Tp1').value = Tp1_C.toFixed(1);
@@ -139,10 +139,10 @@ function calculateTemperatures(withUiLoading = true) {
         + 0.895055 * safePow((Ta1 - Tp1), 1.33)
         + 5.669e-8 * (Math.pow(Ta1, 4) - Math.pow(Tp1, 4));
 
-    const eq22_rhs = 28.0346 * safePow((Tp1 - finalAirTemperatureKelvin), 1.25)
+    const eq22_rhs = 28.0346 * safePow((Tp1 - Tair_final), 1.25)
         + 5.068e-8 * (Math.pow(Tp1, 4) - Math.pow(Tp2, 4));
 
-    const eq23_lhs = 28.0346 * safePow((finalAirTemperatureKelvin - Tp2), 1.25)
+    const eq23_lhs = 28.0346 * safePow((Tair_final - Tp2), 1.25)
         + 4.9e-8 * (Math.pow(Tp1, 4) - Math.pow(Tp2, 4));
 
     const eq23_rhs = 0.903129 * safePow((Tp2 - Ta2), 1.33)
@@ -166,7 +166,7 @@ function calculateTemperatures(withUiLoading = true) {
 
     setText('ex_tp1_k', Tp1.toFixed(4));
     setText('ex_tp2_k', Tp2.toFixed(4));
-    setText('ex_tair_k', finalAirTemperatureKelvin.toFixed(4));
+    setText('ex_tair_k', Tair_final.toFixed(4));
 
     setText('ex_tp1_c', Tp1_C.toFixed(2));
     setText('ex_tp2_c', Tp2_C.toFixed(2));

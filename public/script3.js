@@ -18,19 +18,19 @@ function setButtonLoading(button, loadingLabel) {
         button.dataset.defaultLabel = button.innerHTML;
     }
 
-    const loadingStartTimeMs = performance.now();
+    const startTime = performance.now();
     button.disabled = true;
     button.classList.add('loading');
     button.innerHTML = loadingLabel;
 
     return () => {
-        const elapsedLoadingTimeMs = performance.now() - loadingStartTimeMs;
-        const remainingLoadingDelayMs = Math.max(0, 280 - elapsedLoadingTimeMs);
+        const elapsed = performance.now() - startTime;
+        const remaining = Math.max(0, 280 - elapsed);
         setTimeout(() => {
             button.disabled = false;
             button.classList.remove('loading');
             button.innerHTML = button.dataset.defaultLabel;
-        }, remainingLoadingDelayMs);
+        }, remaining);
     };
 }
 
@@ -54,26 +54,9 @@ function calculatePower(withUiLoading = true) {
 
     // 1. Gather Inputs from the UI
     const tair_C = parseFloat(document.getElementById('tair').value);
-    const plateRadius_cm = parseFloat(document.getElementById('plateRadius').value);
-    const plateLength_cm = parseFloat(document.getElementById('plateLength').value);
+    const volume_cm3 = parseFloat(document.getElementById('volume').value);
     const speed_rpm = parseFloat(document.getElementById('speed').value);
     const beale_no = parseFloat(document.getElementById('beale').value);
-
-    if (
-        [tair_C, plateRadius_cm, plateLength_cm, speed_rpm, beale_no].some((v) => !Number.isFinite(v)) ||
-        plateRadius_cm <= 0 ||
-        plateLength_cm <= 0
-    ) {
-        document.getElementById('volume').value = '';
-        document.getElementById('powerOut').value = '';
-        document.getElementById('pressureOut').value = '';
-        finishLoading();
-        return;
-    }
-
-    // Swept volume from geometry: V = pi * r^2 * L (in cm^3 when r and L are in cm)
-    const volume_cm3 = Math.PI * Math.pow(plateRadius_cm, 2) * plateLength_cm;
-    document.getElementById('volume').value = volume_cm3.toFixed(3);
 
     // 2. Unit Conversions
     const tair_K = tair_C + 273.15;            // Celsius to Kelvin
