@@ -1,34 +1,3 @@
-<<<<<<< HEAD
-:root {
-    --primary-color: #1a365d;
-    --secondary-color: #2b6cb0;
-    --bg-color: #f7fafc;
-    --panel-bg: #ffffff;
-    --text-color: #2d3748;
-    --border-color: #cbd5e0;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    padding: 20px;
-    margin: 0;
-    overflow-x: hidden;
-}
-
-/* --- SIDEBAR & HAMBURGER STYLES --- */
-.hamburger {
-    font-size: 30px;
-    cursor: pointer;
-    color: var(--primary-color);
-    margin-right: 20px;
-    transition: color 0.3s;
-}
-
-.hamburger:hover {
-    color: var(--secondary-color);
-=======
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
@@ -101,23 +70,10 @@ body::after {
     background: rgba(57, 116, 255, 0.13);
     left: -110px;
     bottom: 80px;
->>>>>>> afd65b7 ( new addition)
 }
 
 .sidebar {
     height: 100%;
-<<<<<<< HEAD
-    width: 280px;
-    position: fixed;
-    top: 0;
-    left: -280px;
-    background-color: var(--primary-color);
-    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-    overflow-x: hidden;
-    transition: 0.4s ease-in-out;
-    padding-top: 80px;
-    z-index: 1000;
-=======
     width: 300px;
     position: fixed;
     top: 0;
@@ -128,7 +84,6 @@ body::after {
     background: linear-gradient(160deg, #13284e 0%, #1f437c 100%);
     box-shadow: 8px 0 32px rgba(15, 28, 54, 0.38);
     transition: left 0.35s ease;
->>>>>>> afd65b7 ( new addition)
 }
 
 .sidebar.active {
@@ -136,20 +91,6 @@ body::after {
 }
 
 .sidebar a {
-<<<<<<< HEAD
-    padding: 15px 25px;
-    text-decoration: none;
-    font-size: 18px;
-    color: #e2e8f0;
-    display: block;
-    transition: 0.2s;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.sidebar a:hover {
-    color: #ffffff;
-    background-color: var(--secondary-color);
-=======
     display: block;
     padding: 14px 24px;
     color: #eef4ff;
@@ -162,49 +103,18 @@ body::after {
 
 .sidebar a:hover {
     background: rgba(255, 255, 255, 0.12);
->>>>>>> afd65b7 ( new addition)
     padding-left: 30px;
 }
 
 .sidebar .close-btn {
     position: absolute;
-<<<<<<< HEAD
-    top: 15px;
-    right: 20px;
-    font-size: 36px;
-=======
     top: 14px;
     right: 18px;
     font-size: 34px;
->>>>>>> afd65b7 ( new addition)
     border-bottom: none;
     padding: 0;
 }
 
-<<<<<<< HEAD
-/* --- MAIN LAYOUT STYLES --- */
-.header {
-    background-color: var(--panel-bg);
-    padding: 15px 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-    border-left: 5px solid var(--primary-color);
-}
-
-h1 {
-    color: var(--primary-color);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-h2 {
-    color: var(--primary-color);
-    margin-top: 30px;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 5px;
-    display: inline-block;
-=======
 .hamburger {
     font-size: 30px;
     margin-right: 16px;
@@ -243,35 +153,21 @@ h2 {
     display: inline-block;
     margin-top: 30px;
     padding-bottom: 4px;
->>>>>>> afd65b7 ( new addition)
 }
 
 .sub-header {
     display: flex;
     justify-content: space-between;
-<<<<<<< HEAD
-    color: var(--secondary-color);
-    font-weight: 600;
-    font-size: 14px;
-    margin-top: 10px;
-=======
     margin-top: 10px;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.11em;
     font-weight: 700;
     color: var(--ink-500);
->>>>>>> afd65b7 ( new addition)
 }
 
 .main-container {
     display: flex;
-<<<<<<< HEAD
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-=======
     gap: 18px;
     margin-bottom: 18px;
 }
@@ -284,43 +180,10 @@ h2 {
 .main-container > *:nth-child(2) { animation-delay: 0.1s; }
 .main-container > *:nth-child(3) { animation-delay: 0.16s; }
 
->>>>>>> afd65b7 ( new addition)
 .column {
     flex: 1;
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
-    gap: 20px;
-}
-
-.graph-column {
-    flex: 1.5; 
-}
-
-fieldset {
-    background-color: var(--panel-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    height: 100%;
-    box-sizing: border-box;
-}
-
-legend {
-    color: var(--primary-color);
-    font-weight: bold;
-    background: var(--bg-color);
-    padding: 5px 10px;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-}
-
-/* --- INPUTS & CONTROLS --- */
-.input-row {
-    display: flex;
-    align-items: center;
-=======
     gap: 18px;
 }
 
@@ -362,31 +225,11 @@ legend {
     display: flex;
     align-items: center;
     gap: 7px;
->>>>>>> afd65b7 ( new addition)
     margin-bottom: 12px;
     font-size: 13px;
 }
 
 .input-row label {
-<<<<<<< HEAD
-    width: 140px;
-    font-weight: 600;
-    color: var(--text-color);
-}
-
-.input-row input {
-    width: 50px;
-    margin: 0 5px;
-    padding: 4px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    text-align: center;
-}
-
-.date-row {
-    display: flex;
-    justify-content: space-around;
-=======
     width: 145px;
     color: var(--ink-700);
     font-weight: 600;
@@ -401,7 +244,9 @@ legend {
     border: 1px solid rgba(31, 53, 94, 0.22);
     background: #ffffff;
     color: var(--ink-900);
-    padding: 7px 8px;
+    padding: 10px 10px;
+    min-height: 44px;
+    font-size: 16px;
     font-weight: 600;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
@@ -418,7 +263,7 @@ legend {
 }
 
 .input-row input {
-    width: 62px;
+    width: 76px;
     text-align: center;
 }
 
@@ -431,53 +276,23 @@ legend {
     display: flex;
     justify-content: space-between;
     gap: 10px;
->>>>>>> afd65b7 ( new addition)
     text-align: center;
 }
 
 .date-row label {
     display: block;
-<<<<<<< HEAD
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.date-row input {
-    width: 60px;
-    padding: 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-=======
     margin-bottom: 6px;
     font-weight: 700;
     color: var(--ink-700);
 }
 
 .date-row input {
-    width: 72px;
->>>>>>> afd65b7 ( new addition)
+    width: 92px;
     text-align: center;
 }
 
 .required-inputs label {
     display: block;
-<<<<<<< HEAD
-    margin-top: 10px;
-    font-weight: 600;
-    color: var(--secondary-color);
-}
-
-.required-inputs select, .required-inputs input {
-    width: 100%;
-    padding: 6px;
-    margin-top: 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* --- OUTPUTS & TABLES --- */
-=======
     margin-top: 12px;
     margin-bottom: 4px;
     color: var(--ink-700);
@@ -540,17 +355,12 @@ legend {
     animation: spin 0.75s linear infinite;
 }
 
->>>>>>> afd65b7 ( new addition)
 .output-box {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-<<<<<<< HEAD
-.flex-1 { flex: 1; }
-.flex-2 { flex: 2; }
-=======
 .flex-1 {
     flex: 1;
 }
@@ -558,69 +368,10 @@ legend {
 .flex-2 {
     flex: 2;
 }
->>>>>>> afd65b7 ( new addition)
 
 .output-flex {
     display: flex;
     align-items: center;
-<<<<<<< HEAD
-    justify-content: space-around;
-}
-
-.calc-btn {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-transform: uppercase;
-}
-
-.calc-btn:hover {
-    background-color: var(--primary-color);
-}
-
-.output-table td {
-    padding: 5px;
-    font-weight: 600;
-}
-
-.output-table input {
-    width: 100px;
-    text-align: center;
-    font-weight: bold;
-    color: var(--primary-color);
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
-    padding: 5px;
-    border-radius: 4px;
-}
-
-.center-text { text-align: center; }
-
-.daily-output input {
-    width: 100px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #e53e3e;
-    text-align: center;
-    padding: 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    background-color: var(--bg-color);
-}
-
-.daily-output span { font-weight: bold; color: var(--secondary-color); }
-
-.sun-times {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-around;
-=======
     justify-content: space-between;
     gap: 18px;
 }
@@ -659,7 +410,7 @@ legend {
 }
 
 .output-table input {
-    width: 110px;
+    width: 155px;
     text-align: center;
     background: #f8fbff;
     color: var(--ink-700);
@@ -688,37 +439,11 @@ legend {
     display: flex;
     justify-content: space-around;
     gap: 12px;
->>>>>>> afd65b7 ( new addition)
     font-size: 14px;
 }
 
 .sun-times input {
-<<<<<<< HEAD
-    width: 40px;
-    text-align: center;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 3px;
-    background-color: var(--bg-color);
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-.chart-container {
-    width: 100%;
-    height: 100%;
-    min-height: 350px;
-}
-
-.math-block {
-    background-color: var(--bg-color);
-    padding: 10px;
-    border-radius: 4px;
-    overflow-x: auto;
-    border-left: 4px solid var(--secondary-color);
-    margin: 15px 0;
-=======
-    width: 46px;
+    width: 64px;
     text-align: center;
 }
 
@@ -751,21 +476,11 @@ legend {
     border-left: 4px solid var(--accent);
     background: #f8fbff;
     overflow-x: auto;
->>>>>>> afd65b7 ( new addition)
 }
 
 .explain-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(280px, 1fr));
-<<<<<<< HEAD
-    gap: 16px;
-}
-
-.explain-card {
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-=======
     gap: 14px;
 }
 
@@ -773,38 +488,17 @@ legend {
     border: 1px solid rgba(31, 53, 94, 0.13);
     border-radius: 12px;
     background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
->>>>>>> afd65b7 ( new addition)
     padding: 14px;
 }
 
 .explain-card h3 {
     margin: 0 0 8px;
-<<<<<<< HEAD
-    color: var(--primary-color);
-    font-size: 16px;
-=======
     color: var(--ink-700);
     font-size: 17px;
->>>>>>> afd65b7 ( new addition)
 }
 
 .explain-card p {
     margin: 8px 0;
-<<<<<<< HEAD
-    line-height: 1.5;
-}
-
-.explain-note {
-    font-size: 13px;
-    color: var(--secondary-color);
-    font-weight: 600;
-}
-
-@media (max-width: 980px) {
-    .explain-grid {
-        grid-template-columns: 1fr;
-    }
-=======
     line-height: 1.52;
 }
 
@@ -897,5 +591,4 @@ legend {
     to {
         transform: rotate(360deg);
     }
->>>>>>> afd65b7 ( new addition)
 }
