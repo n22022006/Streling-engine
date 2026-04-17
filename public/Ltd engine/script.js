@@ -74,14 +74,30 @@ function runLTDSimulation() {
     const VT = Vsp + Vsd + Vdc + Vde; 
     const AhH = 0.05, AhC = 0.05, Ahm = 0.5, mm = 0.1, Afree = 0.01, dh = 0.001, mu = 1.8e-5;
     
-    // Initialization
+    // Initialization , These are the parameters used in coding .
     let p = p_init, pc = p, pe = p, pr = p;
     let Tc = Tc_init, Te = TH_init, Tr = (Tc_init + TH_init)/2;
     let Tm = Tr, TH = TH_init, TC_temp = Tc_init;
     
-    let mc = (pc * (Vdc + Vsp/2)) / (R * Tc);
-    let me = (pe * (Vde + Vsd/2)) / (R * Te);
-    let mr = (pr * 0.0005) / (R * Tr); 
+    // ========================================================================
+    // INITIAL GAS MASS CALCULATION (Derived from Eq. 3.18, 3.19, 3.20)
+    // ------------------------------------------------------------------------
+    // Before the engine starts moving, we must calculate exactly how many 
+    // kilograms of air are trapped inside the three main spaces of the engine.
+    // We do this by rearranging the Ideal Gas Law (PV = mRT) into (m = PV / RT).
+    // ========================================================================
+
+    // 1. Mass in the Compression Space (mc)
+    // We estimate the starting volume as the dead space (Vdc) plus half the piston's swept space (Vsp/2).
+    let mc = (pc * (Vdc + Vsp / 2)) / (R * Tc); 
+
+    // 2. Mass in the Expansion Space (me)
+    // We estimate the starting volume as the dead space (Vde) plus half the displacer's swept space (Vsd/2).
+    let me = (pe * (Vde + Vsd / 2)) / (R * Te); 
+
+    // 3. Mass in the Regenerator (mr)
+    // The regenerator has a fixed, constant volume (estimated here as 0.0005 m^3).
+    let mr = (pr * 0.0005) / (R * Tr);
 
     let indicatedWorkPerCycle = 0, brakeWorkPerCycle = 0, cycleHotHeatTransferTotal = 0, cycleColdHeatTransferTotal = 0, cycleRegeneratorHeatTransferTotal = 0;
 
