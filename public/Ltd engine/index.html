@@ -76,6 +76,198 @@
                         <div class="out-item"><label>Compression Space Temperature (Tc):</label><input type="text" id="output_compression_space_temperature_k" readonly> K</div>
                         <div class="out-item"><label>Expansion Space Temperature (Te):</label><input type="text" id="output_expansion_space_temperature_k" readonly> K</div>
                         <div class="out-item"><label>Regenerator Space Temperature (Tr):</label><input type="text" id="output_regenerator_space_temperature_k" readonly> K</div>
+                        <div class="out-item"><label>Hot Plate Temperature (TH):</label><input type="text" id="output_hot_plate_temperature_k" readonly> K</div>                        <div class="out-item"><label>Matrix Temperature (Tm):</label><input type="text" id="output_matrix_temperature_k" readonly> K</div>
+                        <div class="out-item"><label>Matrix Temperature Rate (dTm/dt):</label><input type="text" id="output_matrix_temperature_rate_k_per_s" readonly> K/s</div>
+                        <div class="out-item"><label>Compression Space Mass (mc):</label><input type="text" id="output_compression_space_mass_kg" readonly> kg</div>
+                        <div class="out-item"><label>Expansion Space Mass (me):</label><input type="text" id="output_expansion_space_mass_kg" readonly> kg</div>                        <div class="out-item"><label>Regenerator Space Mass (mr):</label><input type="text" id="output_regenerator_space_mass_kg" readonly> kg</div>
+                        <div class="out-item"><label>Mass Flow Cold to Regenerator (dmcr/dt):</label><input type="text" id="output_mass_flow_cold_to_regenerator_kg_per_s" readonly> kg/s</div>
+                        <div class="out-item"><label>Mass Flow Regenerator to Expansion (dmre/dt):</label><input type="text" id="output_mass_flow_regenerator_to_expansion_kg_per_s" readonly> kg/s</div>
+                        <div class="out-item"><label>Cold-Side Heat Transfer Coefficient (hC):</label><input type="text" id="output_cold_side_heat_transfer_coefficient_w_per_m2k" readonly> W/m²K</div>
+                        <div class="out-item"><label>Hot-Side Heat Transfer Coefficient (hH):</label><input type="text" id="output_hot_side_heat_transfer_coefficient_w_per_m2k" readonly> W/m²K</div>
+                        <div class="out-item"><label>Matrix Heat Transfer Coefficient (hm):</label><input type="text" id="output_matrix_heat_transfer_coefficient_w_per_m2k" readonly> W/m²K</div>
+                        <div class="out-item"><label>Instantaneous Piston Torque:</label><input type="text" id="output_instantaneous_piston_torque_nm" readonly> Nm</div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="output-panel">
+                    <legend>Cyclic Totals & Performance (Integrated)</legend>
+                    <div class="data-grid">
+                        <div class="out-item"><label>Hot-Side Heat Input per Cycle (QH):</label><input type="text" id="output_cycle_hot_heat_in_j" readonly> J/cycle</div>
+                        <div class="out-item"><label>Cold-Side Heat Rejection per Cycle (QC):</label><input type="text" id="output_cycle_cold_heat_out_j" readonly> J/cycle</div>
+                        <div class="out-item"><label>Regenerator Heat Transfer per Cycle (Qr):</label><input type="text" id="output_cycle_regenerator_heat_j" readonly> J/cycle</div>
+                        <div class="out-item"><label>Indicated Work per Cycle (Wi):</label><input type="text" id="output_cycle_indicated_work_j" readonly> J/cycle</div>
+                        <div class="out-item"><label>Brake Work per Cycle (Wb):</label><input type="text" id="output_cycle_brake_work_j" readonly> J/cycle</div>                        <div class="out-item highlight"><label>Indicated Power Output (Pi):</label><input type="text" id="output_indicated_power_w" readonly> W</div>
+                        <div class="out-item highlight"><label>Brake Power Output (Pb):</label><input type="text" id="output_brake_power_w" readonly> W</div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div id="formula-tab" class="tab-content" style="display: none;">
+        <div class="main-container">
+            <fieldset class="theory-panel column">
+                <legend>Second-Order Mathematical Model Working</legend>
+                <p>Below is the step-by-step logic exactly as it is executed inside the JavaScript solver during its 1000-step iteration loop.</p>
+                
+                <div style="display: flex; justify-content: center; margin: 30px 0;">
+                    <div class="mermaid" id="stirling-flowchart">
+                        graph TD
+                            A[/Input initial data/] --> B
+                            
+                            subgraph Cycle Iteration
+                                B{For time step 1:1:1000} --> C
+                                C["Determine V and dV/dt (Eq.3.1-3.6)<br>Determine p and dp/dt (Eq.3.12)<br>Determine m (Eq.3.15-3.17)<br>Determine Tm, dTm/dt (Eq.3.14)<br>Determine dm/dt (Eq.3.10-3.11)<br>Determine h (Eq.3.29-3.33)<br>Determine Δp, pe, pc, pr (Eq.3.21,3.23-3.24)<br>Determine Te, Tc, Tr (Eq.3.18-3.20)<br>Determine QH, QC, Qr (Eq.3.25-3.27)<br>Determine TH (Eq.3.28)<br>Determine Torque (Eq.3.37-3.59)"]
+                                C --> B
+                            end
+                            
+                            B --> D
+                            
+                            D["Determine Wi, Pi (Eq.3.34-3.36)<br>Determine Wb, Pb (Eq.3.60-3.61)"] --> E
+                            
+                            E{"Steady state condition checking"}
+                            E -- No --> B
+                            E -- Yes --> F([End])
+
+                            style A fill:#e8f8f5,stroke:#117a65,stroke-width:2px                            style B fill:#fef9e7,stroke:#f1c40f,stroke-width:2px                            style C fill:#ffffff,stroke:#34495e,stroke-width:2px                            style D fill:#ffffff,stroke:#34495e,stroke-width:2px                            style E fill:#fef9e7,stroke:#f1c40f,stroke-width:2px                            style F fill:#fadbd8,stroke:#e74c3c,stroke-width:2px                    </div>
+                </div>
+
+                <div class="formula-grid" style="grid-template-columns: 1fr;">
+                    
+                    <div class="formula-item" style="text-align: left;">
+                        <h3 style="color: var(--accent-color);">1. Kinematics & Volumes (Eq 3.1 - 3.6)</h3>
+                        <p>The displacements of the piston ($x$) and displacer ($y$) drive the volume changes in the expansion ($V_e$) and compression ($V_c$) spaces.</p>
+                        <div class="math-block">
+                            $$x = \frac{x_0}{2}(1 + \cos(\theta - \varphi))$$
+                            $$V_c = V_{d-c} + \frac{V_{S-P}}{2}(1 + \cos(\theta - \varphi)) + \frac{V_{S-D}}{2}(1 - \cos\theta)$$
+                            $$\frac{dV_c}{dt} = -\frac{V_{S-P}}{2}\omega \sin(\theta - \varphi) + \frac{V_{S-D}}{2}\omega \sin\theta$$
+                        </div>
+                        <p><i>Code Logic:</i> These values dictate the geometry of the engine at every time step $t$.</p>
+                    </div>
+
+                    <div class="formula-item" style="text-align: left;">
+                        <h3 style="color: var(--accent-color);">2. Heat Transfer Coefficients (Eq 3.29 - 3.33)</h3>
+                        <p>Convective heat transfer is heavily dependent on piston velocity and instantaneous pressure.</p>
+                        <div class="math-block">
+                            $$h = 2.43 V_p^{1/3} (p_{inst} T_g)^{1/2}$$
+                            $$dQ_H = h_H A_{h-H} (T_H - T_e)$$
+                        </div>
+                        <p><i>Code Logic:</i> Absolute values are enforced in JavaScript (`Math.abs`) to prevent `NaN` errors when calculating fractional powers of velocities.</p>
+                    </div>
+
+                    <div class="formula-item" style="text-align: left;">
+                        <h3 style="color: var(--accent-color);">3. Pressure Derivative (Eq 3.12)</h3>
+                        <p>The core of the 2nd-order model. The global pressure fluctuates based on the net heat transfer and volume changes.</p>
+                        <div class="math-block">
+                            $$\frac{dp}{dt} = \frac{1}{C_v V_T} \left( R(dQ_H + dQ_r + dQ_C) - C_p \left( p_c \frac{dV_c}{dt} + p_e \frac{dV_e}{dt} \right) \right)$$
+                        </div>
+                        <p><i>Code Logic:</i> Integrated using Euler's method: <code>p = p + (dpdt * dt)</code>.</p>
+                    </div>
+
+                    <div class="formula-item" style="text-align: left;">
+                        <h3 style="color: var(--accent-color);">4. Mass Flows & State (Eq 3.10, 3.15, 3.18)</h3>
+                        <p>Mass is pushed between the chambers. The Ideal Gas Law establishes the new temperatures.</p>
+                        <div class="math-block">
+                            $$\dot{m}_{c-r} = -\frac{1}{R T_{c-r}} \left( -\frac{R}{C_p} dQ_C + p_c \frac{dV_c}{dt} + \frac{V_c}{\gamma} \frac{dp}{dt} \right)$$                            $$\frac{dm_c}{dt} = -\dot{m}_{c-r} \quad \implies \quad m_c = m_c + \left(\frac{dm_c}{dt} \times dt\right)$$
+                            $$T_c = \frac{p_c V_c}{R m_c}$$
+                        </div>
+                        <p><i>Code Logic:</i> Limits (`Math.max`) are applied to mass values in the JS to ensure mass never drops below zero during large iteration steps.</p>
+                    </div>
+
+                    <div class="formula-item" style="text-align: left;">
+                        <h3 style="color: var(--accent-color);">5. Work & Power Output (Eq 3.34 - 3.61)</h3>
+                        <p>Work is the integration of pressure over volume. Power is Work multiplied by Frequency.</p>
+                        <div class="math-block">
+                            $$W_i = \int_0^t \left( p_c \frac{dV_c}{dt} + p_e \frac{dV_e}{dt} \right) dt$$
+                            $$P_i = W_i \times f$$
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTD Stirling Engine Mathematical Model</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+    </script>
+</head>
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+        <a href="javascript:void(0)" onclick="navigateSection('../index.html')">Solar Radiation Program</a>
+        <a href="javascript:void(0)" onclick="navigateSection('../index2.html')">Stirling Temperature Program</a>
+        <a href="javascript:void(0)" onclick="navigateSection('../index3.html')">Stirling Power Program</a>
+        <a href="javascript:void(0)" onclick="showSection('sim-tab')">LTD Stirling Engine</a>
+    </div>
+
+    <div class="header">
+        <div style="display: flex; align-items: center;">
+            <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+            <h1 style="margin: 0;">LTD Stirling Engine</h1>
+        </div>
+        <div class="sub-header">
+            <span>Kinematic Gamma-Type Model</span>
+            <span>Stabilized Numerical Integration</span>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-link active" onclick="openTab(event, 'sim-tab')">Simulation Console</button>
+        <button class="tab-link" onclick="openTab(event, 'formula-tab')">Formulas & Working</button>
+    </div>
+
+    <div id="sim-tab" class="tab-content active" style="display: block;">
+        <div class="main-container">
+            
+            <div class="column input-column">
+                <fieldset>
+                    <legend>Engine Geometry (Table 3.1)</legend>
+                    <div class="input-row"><label>Piston Stroke (x0)</label><input type="number" id="input_piston_stroke_m" value="0.0826" step="any"><span>m</span></div>
+                    <div class="input-row"><label>Piston Swept Volume (Vsp)</label><input type="number" id="input_piston_swept_volume_m3" value="0.0008938" step="any"><span>m³</span></div>
+                    <div class="input-row"><label>Displacer Stroke (y0)</label><input type="number" id="input_displacer_stroke_m" value="0.0795" step="any"><span>m</span></div>
+                    <div class="input-row"><label>Displacer Swept Volume (Vsd)</label><input type="number" id="input_displacer_swept_volume_m3" value="0.0063938" step="any"><span>m³</span></div>
+                    <div class="input-row"><label>Phase Angle (phi)</label><input type="number" id="input_phase_angle_deg" value="90" step="any"><span>Deg</span></div>
+                    <div class="input-row"><label>Engine Speed</label><input type="number" id="input_engine_speed_rpm" value="120" step="any"><span>RPM</span></div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Thermodynamic State</legend>
+                    <div class="input-row"><label>Initial Pressure</label><input type="number" id="input_initial_pressure_pa" value="101325" step="any"><span>Pa</span></div>
+                    <div class="input-row"><label>Cold Sink Temperature (Tc)</label><input type="number" id="input_cold_sink_temperature_k" value="300" step="any"><span>K</span></div>
+                    <div class="input-row"><label>Hot Source Temperature (TH)</label><input type="number" id="input_hot_source_temperature_k" value="350" step="any"><span>K</span></div>
+                </fieldset>
+
+                <button class="calc-btn" onclick="runLTDSimulation()">Execute Integration (1000 Steps)</button>
+            </div>
+
+            <div class="column output-column">
+                <fieldset class="output-panel">
+                    <legend>Final State Variables (t = 1 Cycle)</legend>
+                    <div class="data-grid">
+                        <div class="out-item"><label>Compression Space Pressure (pc):</label><input type="text" id="output_compression_space_pressure_pa" readonly> Pa</div>
+                        <div class="out-item"><label>Expansion Space Pressure (pe):</label><input type="text" id="output_expansion_space_pressure_pa" readonly> Pa</div>
+                        <div class="out-item"><label>Regenerator Space Pressure (pr):</label><input type="text" id="output_regenerator_space_pressure_pa" readonly> Pa</div>
+                        <div class="out-item"><label>Pressure Drop (delta p):</label><input type="text" id="output_pressure_drop_pa" readonly> Pa</div>
+                        <div class="out-item"><label>Pressure Rate of Change (dp/dt):</label><input type="text" id="output_pressure_rate_pa_per_s" readonly> Pa/s</div>
+                        <div class="out-item"><label>Compression Space Temperature (Tc):</label><input type="text" id="output_compression_space_temperature_k" readonly> K</div>
+                        <div class="out-item"><label>Expansion Space Temperature (Te):</label><input type="text" id="output_expansion_space_temperature_k" readonly> K</div>
+                        <div class="out-item"><label>Regenerator Space Temperature (Tr):</label><input type="text" id="output_regenerator_space_temperature_k" readonly> K</div>
                         <div class="out-item"><label>Hot Plate Temperature (TH):</label><input type="text" id="output_hot_plate_temperature_k" readonly> K</div>
                         <div class="out-item"><label>Matrix Temperature (Tm):</label><input type="text" id="output_matrix_temperature_k" readonly> K</div>
                         <div class="out-item"><label>Matrix Temperature Rate (dTm/dt):</label><input type="text" id="output_matrix_temperature_rate_k_per_s" readonly> K/s</div>

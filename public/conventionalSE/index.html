@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conventional Stirling Engine Model</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+    </script>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Conventional Stirling Engine Solver</h1>
+        <div class="sub-header">
+            <span>Gamma-Type Model (10-Node Regenerator)</span>
+            <span>Stabilized 2nd-Order Numerical Integration</span>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-link active" onclick="openTab(event, 'sim-tab')">Simulation Console</button>
+        <button class="tab-link" onclick="openTab(event, 'formula-tab')">Formulas & Flowchart</button>
+    </div>
+
+    <div id="sim-tab" class="tab-content active" style="display: block;">
+        <div class="main-container">
+            
+            <div class="column inputs-col">
+                <fieldset>
+                    <legend>Engine Geometry (Table 3.2)</legend>
+                    <div class="input-row"><label>Piston Stroke (x0)</label><input type="number" id="in_x0" value="0.025" step="any"><span>m</span></div>
+                    <div class="input-row"><label>Piston Vol (Vsp)</label><input type="number" id="in_vsp" value="0.0000754768" step="any"><span>m³</span></div>
+                    <div class="input-row"><label>Displacer Stroke (y0)</label><input type="number" id="in_y0" value="0.025" step="any"><span>m</span></div>
+                    <div class="input-row"><label>Displacer Vol (Vsd)</label><input type="number" id="in_vsd" value="0.0000754768" step="any"><span>m³</span></div>
+                    <div class="input-row"><label>Phase Angle (φ)</label><input type="number" id="in_phi" value="90" step="any"><span>Deg</span></div>
+                    <div class="input-row"><label>Engine Speed</label><input type="number" id="in_rpm" value="600" step="any"><span>RPM</span></div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Heat Exchangers (Table 3.2)</legend>
+                    <div class="input-row"><label>Heater Length</label><input type="number" id="in_h_len" value="0.24" step="any"><span>m</span></div>
+                    <div class="input-row"><label>Cooler Length</label><input type="number" id="in_c_len" value="0.05" step="any"><span>m</span></div>
+                    <div class="input-row"><label>Regen Length</label><input type="number" id="in_r_len" value="0.04" step="any"><span>m</span></div>
+                    <div class="input-row"><label>Cold Sink (Tc)</label><input type="number" id="in_tc" value="300" step="any"><span>K</span></div>
+                    <div class="input-row"><label>Hot Source (TH)</label><input type="number" id="in_th" value="800" step="any"><span>K</span></div>
+                </fieldset>
+
+                <button class="calc-btn" onclick="runConventionalSimulation()">Execute Integration (1000 Steps)</button>
+            </div>
+
+            <div class="column outputs-col">
+                <fieldset class="output-panel">
+                    <legend>Final State Variables (t = 1 Cycle)</legend>
+                    <div class="data-grid">
+                        <div class="out-item"><label>Local p_c :</label><input type="text" id="out_pc" readonly> Pa</div>
+                        <div class="out-item"><label>Local p_e :</label><input type="text" id="out_pe" readonly> Pa</div>
+                        <div class="out-item"><label>Local p_r(1) :</label><input type="text" id="out_pr1" readonly> Pa</div>
+                        <div class="out-item"><label>Local p_r(10):</label><input type="text" id="out_pr10" readonly> Pa</div>
+                        <div class="out-item"><label>dp/dt :</label><input type="text" id="out_dpdt" readonly> Pa/s</div>
+                        <div class="out-item"><label>Temp T_c :</label><input type="text" id="out_tc" readonly> K</div>
+                        <div class="out-item"><label>Temp T_e :</label><input type="text" id="out_te" readonly> K</div>
+                        <div class="out-item"><label>Mean T_r :</label><input type="text" id="out_tr_mean" readonly> K</div>
+                        <div class="out-item"><label>Mass m_c :</label><input type="text" id="out_mc" readonly> kg</div>
+                        <div class="out-item"><label>Mass m_e :</label><input type="text" id="out_me" readonly> kg</div>
+                        <div class="out-item"><label>Mass m_r(total):</label><input type="text" id="out_mr_tot" readonly> kg</div>
+                        <div class="out-item"><label>dm_cc/dt :</label><input type="text" id="out_dmcc" readonly> kg/s</div>
+                        <div class="out-item"><label>dm_He/dt :</label><input type="text" id="out_dmhe" readonly> kg/s</div>
+                        <div class="out-item"><label>Coeff h_C :</label><input type="text" id="out_hc" readonly> W/m²K</div>
+                        <div class="out-item"><label>Coeff h_H :</label><input type="text" id="out_hh" readonly> W/m²K</div>
+                        <div class="out-item"><label>Mean h_m :</label><input type="text" id="out_hm_mean" readonly> W/m²K</div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="output-panel">
+                    <legend>Cyclic Totals & Performance</legend>
+                    <div class="data-grid">
+                        <div class="out-item"><label>Heat In (Q_H) :</label><input type="text" id="out_qh" readonly> J/cycle</div>
+                        <div class="out-item"><label>Heat Out (Q_C) :</label><input type="text" id="out_qc" readonly> J/cycle</div>
+                        <div class="out-item"><label>Regen Heat (Q_r):</label><input type="text" id="out_qr" readonly> J/cycle</div>
+                        <div class="out-item"><label>Ind. Work (W_i) :</label><input type="text" id="out_wi" readonly> J/cycle</div>
+                        <div class="out-item highlight"><label>Ind. Power (P_i) :</label><input type="text" id="out_pi" readonly> W</div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div id="formula-tab" class="tab-content" style="display: none;">
+        <div class="main-container">
+            <fieldset class="theory-panel column">
+                <legend>Figure 3.8: Second-Order Modelling of Conventional Engines</legend>
+                <p>Because conventional engines operate at higher speeds, the regenerator is split into 10 discrete control volumes to accurately simulate the temperature profile. The flowchart below perfectly maps to the JavaScript loop.</p>
+                
+                <div style="display: flex; justify-content: center; margin: 30px 0;">
+                    <div class="mermaid" id="stirling-flowchart">
+                        graph TD
+                            A[/Input/] --> B
+                            
+                            subgraph Cycle Iteration
+                                B{For time step <br> = 1:1:1000} --> C
+                                C["<b>Determine V and dV/dt</b> (Eq.3.62-3.65)<br><b>Determine p and dp/dt</b> (Eq.3.79)<br><b>Determine m</b> (Eq.3.82-3.88)<br><b>Determine Tm, dTm/dt</b> (Eq.3.81)<br><b>Determine dm/dt</b> (Eq.3.73-3.78)<br><b>Determine h</b> (Eq.3.30-3.33, 3.108-3.113)<br><b>Determine Δp, p</b> (Eq.3.94-3.99, 3.101-3.105)<br><b>Determine T</b> (Eq.3.89-3.93)<br><b>Determine Q, Qloss</b> (Eq.3.106-3.107, 3.114-3.116)"]
+                                C --> B
+                            end
+                            
+                            B --> D
+                            
+                            D["<b>Determine Wi, Pi</b> (Eq.3.117-3.118)"] --> E
+                            
+                            E{"Steady state <br> condition checking"}
+                            E -- No --> B
+                            E -- Yes --> F([End])
+
+                            style A fill:#e8f8f5,stroke:#117a65,stroke-width:2px
+                            style B fill:#fef9e7,stroke:#f1c40f,stroke-width:2px
+                            style C fill:#ffffff,stroke:#34495e,stroke-width:2px,text-align:left
+                            style D fill:#ffffff,stroke:#34495e,stroke-width:2px
+                            style E fill:#fef9e7,stroke:#f1c40f,stroke-width:2px
+                            style F fill:#fadbd8,stroke:#e74c3c,stroke-width:2px
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
