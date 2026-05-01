@@ -105,7 +105,7 @@ function runLTDSimulation() {
         // STABILIZATION: Bound temperatures logically (Eq. 3.18, Eq. 3.19, Eq. 3.20)
         Tc = Math.max(100, Math.min(1000, (pc * Vc) / (R * mc)));
         Tr = Math.max(100, Math.min(1000, (pr * Vr) / (R * mr)));
-        Te = Math.max(100, Math.min(1000, (pe * Ve) / (R * me));
+        Te = Math.max(100, Math.min(1000, (pe * Ve) / (R * me)));
 
         let Tcr = (dVcdt < 0) ? Tc : Tr; 
         let Tre = (dVedt > 0) ? Tr : Te;
