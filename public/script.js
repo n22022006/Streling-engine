@@ -93,37 +93,7 @@ function setText(id, value) {
     }
 }
 
-function setButtonLoading(button, loadingLabel) {
-    if (!button) {
-        return () => {};
-    }
-
-    if (!button.dataset.defaultLabel) {
-        button.dataset.defaultLabel = button.innerHTML;
-    }
-
-    const startTime = performance.now();
-    button.disabled = true;
-    button.classList.add('loading');
-    button.innerHTML = loadingLabel;
-
-    return () => {
-        const elapsed = performance.now() - startTime;
-        const remaining = Math.max(0, 280 - elapsed);
-        setTimeout(() => {
-            button.disabled = false;
-            button.classList.remove('loading');
-            button.innerHTML = button.dataset.defaultLabel;
-        }, remaining);
-    };
-}
-
-function runSimulation(withUiLoading = true) {
-    const calcBtn = withUiLoading
-        ? document.querySelector('.calc-btn[onclick*="runSimulation"]')
-        : null;
-    const finishLoading = setButtonLoading(calcBtn, 'Calculating...');
-
+function runSimulation() {
     // PROGRAM: Solar Radiation Program
     // Global solar radiation on tilted surface
     // Page 5, Eq. (1), Refs. [21], [22]
@@ -131,7 +101,7 @@ function runSimulation(withUiLoading = true) {
     // 1) Global solar radiation on tilted surface - Gt = GBt + GDt + GRt
     // 2) Beam radiation and tilt factor - GBt = GB * RB
     // 3) Diffuse radiation - GDt = (0.11 * GBn) * ((1 + cos(beta)) / 2)
-    // 4) Ground-reflected radiation  - GRt = (GB + GD) * rho * ((1 - cos(beta)) / 2)
+    // 4) Ground-reflected radiation - GRt = (GB + GD) * rho * ((1 - cos(beta)) / 2)
     // 5) RB = [sin(L - beta)sin(delta) + cos(L - beta)cos(delta)cos(h)] / [sin(L)sin(delta) + cos(L)cos(delta)cos(h)]
 
     // Gather Inputs
@@ -308,40 +278,18 @@ function runSimulation(withUiLoading = true) {
         y: graph_radiation, 
         type: 'scatter', 
         mode: 'lines',
-        line: { color: '#ff7a18', width: 4, shape: 'spline', smoothing: 0.55 },
+        line: { color: '#e53e3e', width: 3 },
         fill: 'tozeroy',
-        fillcolor: 'rgba(255, 122, 24, 0.14)',
-        hovertemplate: '<b>%{x:.2f} h</b><br>Gt: %{y:.2f} W/m²<extra></extra>'
+        fillcolor: 'rgba(229, 62, 62, 0.1)'
     };
     
     const layout = {
-        title: {
-            text: 'Total Solar Radiation vs Day Time',
-            font: { color: '#1f355e', size: 20, family: 'Space Grotesk, Trebuchet MS, sans-serif' }
-        },
-        font: {
-            family: 'Space Grotesk, Trebuchet MS, sans-serif',
-            color: '#1f355e'
-        },
-        xaxis: {
-            title: 'Standard Time (Hours)',
-            tickvals: [6, 8, 10, 12, 14, 16, 18],
-            gridcolor: 'rgba(31, 53, 94, 0.11)',
-            zerolinecolor: 'rgba(31, 53, 94, 0.2)'
-        },
-        yaxis: {
-            title: 'Gt (W/m²)',
-            gridcolor: 'rgba(31, 53, 94, 0.11)',
-            zerolinecolor: 'rgba(31, 53, 94, 0.2)'
-        },
+        title: { text: 'Total Solar Radiation vs Day Time', font: { color: '#1a365d', size: 18 } },
+        xaxis: { title: 'Standard Time (Hours)', tickvals: [6, 8, 10, 12, 14, 16, 18] },
+        yaxis: { title: 'Gt (W/m²)' },
         margin: { t: 50, b: 50, l: 60, r: 20 },
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)',
-        hoverlabel: {
-            bgcolor: 'rgba(20, 33, 61, 0.94)',
-            bordercolor: '#ffb347',
-            font: { color: '#ffffff' }
-        }
+        plot_bgcolor: 'rgba(0,0,0,0)'
     };
     
     if (window.Plotly && typeof Plotly.newPlot === 'function') {
@@ -349,13 +297,11 @@ function runSimulation(withUiLoading = true) {
     } else {
         console.warn('Plotly failed to load. Skipping chart render.');
     }
-
-    finishLoading();
 }
 
 // Run on page load
 window.onload = function () {
-    runSimulation(false);
+    runSimulation();
 
     const hashSection = window.location.hash.replace('#', '');
     if (hashSection === 'theory-section' || hashSection === 'simulation-section') {
